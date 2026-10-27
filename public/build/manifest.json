@@ -1,0 +1,86 @@
+{
+  "_input-DpWpMi2h.js": {
+    "file": "assets/input-DpWpMi2h.js",
+    "name": "input",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_log-in-BTHXSxmj.js": {
+    "file": "assets/log-in-BTHXSxmj.js",
+    "name": "log-in",
+    "imports": [
+      "_input-DpWpMi2h.js"
+    ]
+  },
+  "_select-DDa3FJLV.js": {
+    "file": "assets/select-DDa3FJLV.js",
+    "name": "select",
+    "imports": [
+      "_input-DpWpMi2h.js",
+      "resources/js/app.tsx"
+    ]
+  },
+  "_upload-drh7rZfn.js": {
+    "file": "assets/upload-drh7rZfn.js",
+    "name": "upload",
+    "imports": [
+      "_input-DpWpMi2h.js"
+    ]
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-CqBMs-ly.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/Pages/Admin/Portal.tsx": {
+    "file": "assets/Portal-DRdQWQOt.js",
+    "name": "Portal",
+    "src": "resources/js/Pages/Admin/Portal.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_input-DpWpMi2h.js",
+      "_upload-drh7rZfn.js",
+      "_select-DDa3FJLV.js"
+    ]
+  },
+  "resources/js/Pages/Auth/AuthPortal.tsx": {
+    "file": "assets/AuthPortal-DMJH54J6.js",
+    "name": "AuthPortal",
+    "src": "resources/js/Pages/Auth/AuthPortal.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_input-DpWpMi2h.js",
+      "_select-DDa3FJLV.js",
+      "_log-in-BTHXSxmj.js"
+    ]
+  },
+  "resources/js/Pages/Welcome.tsx": {
+    "file": "assets/Welcome-DaWnridE.js",
+    "name": "Welcome",
+    "src": "resources/js/Pages/Welcome.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_input-DpWpMi2h.js",
+      "_upload-drh7rZfn.js",
+      "_log-in-BTHXSxmj.js"
+    ]
+  },
+  "resources/js/app.tsx": {
+    "file": "assets/app-C4QtnS0O.js",
+    "name": "app",
+    "src": "resources/js/app.tsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "resources/js/Pages/Admin/Portal.tsx",
+      "resources/js/Pages/Auth/AuthPortal.tsx",
+      "resources/js/Pages/Welcome.tsx"
+    ],
+    "css": [
+      "assets/app-CqBMs-ly.css"
+    ]
+  }
+}

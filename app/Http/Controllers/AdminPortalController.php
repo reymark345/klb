@@ -905,8 +905,73 @@ class AdminPortalController extends Controller
     }
 
     /**
-     * Safely store an uploaded CMS image directly into public/uploads/cms without relying on
-     * $file->getRealPath() (which returns false on Windows + Apache when upload_tmp_dir is C:\Windows\Temp).
+     * Upload an image file or data URI to the Cloudinary `uploads/cms` folder when configured on Vercel,
+     * returning the clean folder URL path so the database stores only the path/URL (never a blob).
+     */
+    private function uploadToCloudFolderIfConfigured(string $fileOrDataUri, string $filename): ?string
+    {
+        if (app()->runningUnitTests()) {
+            return null;
+        }
+
+        $cloudName = env('CLOUDINARY_CLOUD_NAME');
+        if (empty($cloudName)) {
+            return null;
+        }
+
+        $uploadPreset = env('CLOUDINARY_UPLOAD_PRESET');
+        $apiKey = env('CLOUDINARY_API_KEY');
+        $apiSecret = env('CLOUDINARY_API_SECRET');
+        $folder = env('CLOUDINARY_FOLDER', env('CLOUDINARY_UPLOAD_FOLDER', 'uploads/cms'));
+        $publicId = pathinfo($filename, PATHINFO_FILENAME);
+
+        $endpoint = "https://api.cloudinary.com/v1_1/{$cloudName}/image/upload";
+        $postFields = [
+            'file' => is_file($fileOrDataUri) ? new \CURLFile($fileOrDataUri) : $fileOrDataUri,
+            'folder' => $folder,
+            'public_id' => $publicId,
+        ];
+
+        if (! empty($uploadPreset)) {
+            $postFields['upload_preset'] = $uploadPreset;
+        } elseif (! empty($apiKey) && ! empty($apiSecret)) {
+            $timestamp = time();
+            $paramsToSign = "folder={$folder}&public_id={$publicId}&timestamp={$timestamp}{$apiSecret}";
+            $postFields['api_key'] = $apiKey;
+            $postFields['timestamp'] = $timestamp;
+            $postFields['signature'] = sha1($paramsToSign);
+        } else {
+            return null;
+        }
+
+        try {
+            $ch = curl_init($endpoint);
+            curl_setopt_array($ch, [
+                CURLOPT_POST => true,
+                CURLOPT_POSTFIELDS => $postFields,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_TIMEOUT => 25,
+            ]);
+            $response = curl_exec($ch);
+            curl_close($ch);
+
+            if (is_string($response)) {
+                $json = json_decode($response, true);
+                if (! empty($json['secure_url'])) {
+                    return $json['secure_url'];
+                }
+            }
+        } catch (\Throwable $e) {
+            // Fall back to local folder if cloud upload fails
+        }
+
+        return null;
+    }
+
+    /**
+     * Safely store an uploaded CMS image directly into public/uploads/cms (or cloud uploads/cms folder on Vercel)
+     * without relying on $file->getRealPath() (which returns false on Windows + Apache when upload_tmp_dir is C:\Windows\Temp).
      */
     private function resolveUploadedCmsImage(Request $request): ?string
     {
@@ -928,6 +993,11 @@ class AdminPortalController extends Controller
                     $pathname = $file->getPathname();
 
                     if (! empty($pathname) && is_file($pathname)) {
+                        $cloudUrl = $this->uploadToCloudFolderIfConfigured($pathname, $filename);
+                        if ($cloudUrl !== null) {
+                            return $cloudUrl;
+                        }
+
                         $file->move($destDir, $filename);
 
                         return '/uploads/cms/' . $filename;
@@ -946,10 +1016,16 @@ class AdminPortalController extends Controller
             } elseif ($ext === 'svg+xml') {
                 $ext = 'svg';
             }
+            $filename = 'klb_' . date('Ymd_His') . '_' . bin2hex(random_bytes(5)) . '.' . $ext;
+
+            $cloudUrl = $this->uploadToCloudFolderIfConfigured($base64, $filename);
+            if ($cloudUrl !== null) {
+                return $cloudUrl;
+            }
+
             $binary = base64_decode($matches[2], true);
             if ($binary !== false) {
-                $filename = 'klb_' . date('Ymd_His') . '_' . bin2hex(random_bytes(5)) . '.' . $ext;
-                file_put_contents($destDir . DIRECTORY_SEPARATOR . $filename, $binary);
+                @file_put_contents($destDir . DIRECTORY_SEPARATOR . $filename, $binary);
 
                 return '/uploads/cms/' . $filename;
             }
@@ -996,8 +1072,13 @@ class AdminPortalController extends Controller
                     $filename = 'klb_' . date('Ymd_His') . '_' . bin2hex(random_bytes(5)) . '.' . $ext;
                     $pathname = $file->getPathname();
                     if (! empty($pathname) && is_file($pathname)) {
-                        $file->move($destDir, $filename);
-                        $gallery[] = '/uploads/cms/' . $filename;
+                        $cloudUrl = $this->uploadToCloudFolderIfConfigured($pathname, $filename);
+                        if ($cloudUrl !== null) {
+                            $gallery[] = $cloudUrl;
+                        } else {
+                            $file->move($destDir, $filename);
+                            $gallery[] = '/uploads/cms/' . $filename;
+                        }
                     }
                 } catch (\Throwable $e) {
                     // Continue to base64 fallback
@@ -1015,11 +1096,17 @@ class AdminPortalController extends Controller
                     } elseif ($ext === 'svg+xml') {
                         $ext = 'svg';
                     }
-                    $binary = base64_decode($matches[2], true);
-                    if ($binary !== false) {
-                        $filename = 'klb_' . date('Ymd_His') . '_' . bin2hex(random_bytes(5)) . '.' . $ext;
-                        file_put_contents($destDir . DIRECTORY_SEPARATOR . $filename, $binary);
-                        $gallery[] = '/uploads/cms/' . $filename;
+                    $filename = 'klb_' . date('Ymd_His') . '_' . bin2hex(random_bytes(5)) . '.' . $ext;
+
+                    $cloudUrl = $this->uploadToCloudFolderIfConfigured($base64, $filename);
+                    if ($cloudUrl !== null) {
+                        $gallery[] = $cloudUrl;
+                    } else {
+                        $binary = base64_decode($matches[2], true);
+                        if ($binary !== false) {
+                            @file_put_contents($destDir . DIRECTORY_SEPARATOR . $filename, $binary);
+                            $gallery[] = '/uploads/cms/' . $filename;
+                        }
                     }
                 }
             }

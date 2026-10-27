@@ -55,8 +55,18 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA') ?: (
+                    env('DB_SSL', false)
+                        ? collect([
+                            '/etc/ssl/certs/ca-certificates.crt',
+                            '/etc/pki/tls/certs/ca-bundle.crt',
+                            ini_get('curl.cainfo'),
+                            ini_get('openssl.cafile'),
+                        ])->first(fn ($path) => is_string($path) && $path !== '' && is_file($path))
+                        : null
+                ),
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => env('DB_SSL_VERIFY', false),
+            ], fn ($v) => $v !== null) : [],
         ],
 
         'mariadb' => [
@@ -75,8 +85,18 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA') ?: (
+                    env('DB_SSL', false)
+                        ? collect([
+                            '/etc/ssl/certs/ca-certificates.crt',
+                            '/etc/pki/tls/certs/ca-bundle.crt',
+                            ini_get('curl.cainfo'),
+                            ini_get('openssl.cafile'),
+                        ])->first(fn ($path) => is_string($path) && $path !== '' && is_file($path))
+                        : null
+                ),
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => env('DB_SSL_VERIFY', false),
+            ], fn ($v) => $v !== null) : [],
         ],
 
         'pgsql' => [
