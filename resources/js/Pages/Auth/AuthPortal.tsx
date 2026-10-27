@@ -244,42 +244,6 @@ export default function AuthPortal({
                                     </div>
                                 </div>
                             </div>
-
-                            {/* Primary Admin Owner Quick Login Card */}
-                            <Card className="border-primary/40 bg-card shadow-sm">
-                                <CardHeader className="pb-3">
-                                    <div className="flex items-center justify-between">
-                                        <Badge variant="default">
-                                            <ShieldCheck className="h-3 w-3" />
-                                            Primary Admin (Owner)
-                                        </Badge>
-                                        <span className="font-mono text-[11px] text-muted-foreground">
-                                            Full Governance
-                                        </span>
-                                    </div>
-                                    <CardTitle className="mt-2 text-base">
-                                        {primaryAdminName}
-                                    </CardTitle>
-                                    <CardDescription>
-                                        You are designated as the <strong>Primary Admin</strong>. Click below anytime to sign in directly to your Primary Admin console to approve pending registrations and manage roles.
-                                    </CardDescription>
-                                </CardHeader>
-                                <CardContent className="pt-0 space-y-3">
-                                    <div className="rounded-xl bg-muted/50 px-3 py-2 font-mono text-[11px] text-muted-foreground flex items-center justify-between">
-                                        <span>Email: {primaryAdminEmail}</span>
-                                        <span>Pass: password</span>
-                                    </div>
-                                    <Button
-                                        type="button"
-                                        className="w-full"
-                                        onClick={handleQuickPrimaryAdminLogin}
-                                        disabled={submitting}
-                                    >
-                                        <KeyRound className="h-4 w-4" />
-                                        Sign In as Primary Admin (Approve Users & Edit All)
-                                    </Button>
-                                </CardContent>
-                            </Card>
                         </div>
 
                         {/* Right Column: Login & Register Personal Info Tabs */}
@@ -586,14 +550,14 @@ export default function AuthPortal({
                                         <div className="space-y-3.5">
                                             <div className="space-y-1">
                                                 <label className="text-xs font-semibold text-foreground">
-                                                    Registered Email Address
+                                                    Username or Registered Email Address
                                                 </label>
                                                 <Input
-                                                    type="email"
+                                                    type="text"
                                                     required
                                                     value={loginEmail}
                                                     onChange={(e) => setLoginEmail(e.target.value)}
-                                                    placeholder="you@klbbutuan.org"
+                                                    placeholder="Enter username or email"
                                                 />
                                             </div>
 
@@ -619,77 +583,6 @@ export default function AuthPortal({
                                             <LogIn className="h-4 w-4" />
                                             {submitting ? 'Verifying Approval & Signing In...' : 'Sign In to Account'}
                                         </Button>
-
-                                        <div className="rounded-xl border border-border/80 bg-muted/35 p-4 space-y-2.5">
-                                            <div className="text-xs font-bold text-foreground">
-                                                Demo / Seeded Accounts (Password: <code>password</code>)
-                                            </div>
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        setLoginEmail('joshua@klbbutuan.org');
-                                                        setLoginPassword('password');
-                                                    }}
-                                                    className="text-left rounded-lg border border-border/70 bg-card p-2 hover:border-primary transition-colors cursor-pointer"
-                                                >
-                                                    <div className="font-bold text-foreground">
-                                                        RN Valdehueza (Primary Admin)
-                                                    </div>
-                                                    <div className="font-mono text-muted-foreground">
-                                                        joshua@klbbutuan.org • Approved
-                                                    </div>
-                                                </button>
-
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        setLoginEmail('hannah@klbbutuan.org');
-                                                        setLoginPassword('password');
-                                                    }}
-                                                    className="text-left rounded-lg border border-border/70 bg-card p-2 hover:border-primary transition-colors cursor-pointer"
-                                                >
-                                                    <div className="font-bold text-foreground">
-                                                        Ptr. Hannah (Admin)
-                                                    </div>
-                                                    <div className="font-mono text-muted-foreground">
-                                                        hannah@klbbutuan.org • Can Edit Content/Img
-                                                    </div>
-                                                </button>
-
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        setLoginEmail('elijah@klbbutuan.org');
-                                                        setLoginPassword('password');
-                                                    }}
-                                                    className="text-left rounded-lg border border-border/70 bg-card p-2 hover:border-primary transition-colors cursor-pointer"
-                                                >
-                                                    <div className="font-bold text-foreground">
-                                                        Elijah Navarro (Content Creator)
-                                                    </div>
-                                                    <div className="font-mono text-muted-foreground">
-                                                        elijah@klbbutuan.org • Can Edit Content/Img
-                                                    </div>
-                                                </button>
-
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        setLoginEmail('mark@klbbutuan.org');
-                                                        setLoginPassword('password');
-                                                    }}
-                                                    className="text-left rounded-lg border border-amber-500/40 bg-amber-500/5 p-2 hover:border-amber-500 transition-colors cursor-pointer"
-                                                >
-                                                    <div className="font-bold text-amber-700 dark:text-amber-300">
-                                                        Mark Caraga (Pending Approval)
-                                                    </div>
-                                                    <div className="font-mono text-muted-foreground">
-                                                        mark@klbbutuan.org • Blocked Until Approved
-                                                    </div>
-                                                </button>
-                                            </div>
-                                        </div>
                                     </form>
                                 )}
                             </Card>

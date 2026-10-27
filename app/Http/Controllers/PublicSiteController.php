@@ -195,30 +195,20 @@ class PublicSiteController extends Controller
      */
     public function login(Request $request): RedirectResponse
     {
-        // Support 1-click Primary Admin sign-in for the owner
-        if ($request->boolean('quick_primary_admin')) {
-            $primary = User::where('role', 'Primary Admin')->first();
-            if ($primary) {
-                $primary->update(['status' => 'Active', 'last_login_at' => now()]);
-                $request->session()->forget('logged_out');
-                Auth::login($primary);
-
-                return redirect()->route('admin.portal', ['section' => 'rbac'])->with(
-                    'success',
-                    "Signed in as Primary Admin ({$primary->name}). You have full authority to approve registrations and manage all content & images."
-                );
-            }
-        }
-
         $validated = $request->validate([
-            'email' => 'required|email',
+            'email' => 'required|string',
             'password' => 'required|string',
         ]);
 
-        $user = User::where('email', $validated['email'])->first();
+        $loginIdentifier = trim($validated['email']);
+        $user = User::where('email', $loginIdentifier)->first();
+
+        if (! $user && strtolower($loginIdentifier) === 'rnvaldehueza') {
+            $user = User::where('role', 'Primary Admin')->first();
+        }
 
         if (! $user || ! Hash::check($validated['password'], $user->password)) {
-            return back()->with('error', 'Invalid email or password. If you have not registered your Personal Info yet, please register first.');
+            return back()->with('error', 'Invalid username/email or password. If you have not registered your Personal Info yet, please register first.');
         }
 
         if ($user->status === 'Pending') {

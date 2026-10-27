@@ -15,12 +15,18 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // Migrate legacy Primary Admin email if present
+        User::where('email', 'joshua@klbbutuan.org')->update([
+            'email' => 'rnvaldehueza',
+            'password' => Hash::make('09198655125Qwee!'),
+        ]);
+
         // 1. Seed Users across RBAC Roles (Primary Admin, Admin, Content Creator, Staff/Analyst, Pending Approval)
         $users = [
             [
                 'name' => 'RN Valdehueza (Primary Admin)',
-                'email' => 'joshua@klbbutuan.org',
-                'password' => Hash::make('password'),
+                'email' => 'rnvaldehueza',
+                'password' => Hash::make('09198655125Qwee!'),
                 'role' => 'Primary Admin',
                 'requested_role' => 'Primary Admin',
                 'department' => 'Executive Leadership',

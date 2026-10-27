@@ -1,4 +1,4 @@
-import{r as N,j as G}from"./app-C4QtnS0O.js";/**
+import{r as N,j as G}from"./app-CUqYMCkB.js";/**
  * @license lucide-react v0.475.0 - ISC
  *
  * This source code is licensed under the ISC license.
