@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
                 'requested_role' => 'Primary Admin',
                 'department' => 'Executive Leadership',
                 'phone' => '+63 917 842 1001',
-                'address' => 'J.C. Aquino Avenue, Brgy. Libertad, Butuan City',
+                'address' => 'P. Burgos Street, Brgy. Diego Silang, Butuan City, Philippines, 8600',
                 'birthdate' => '1992-08-15',
                 'gender' => 'Male',
                 'ministry' => 'Senior Pastoral & Governance',
@@ -255,7 +255,7 @@ class DatabaseSeeder extends Seeder
                 'section' => 'Hero Banner',
                 'label' => 'Landing Page Welcome Feature Image',
                 'title' => 'A Place Where Every Generation Finds Purpose',
-                'subtitle' => 'SUNDAY CELEBRATIONS • 8:30 AM & 10:30 AM',
+                'subtitle' => 'SUNDAY CELEBRATIONS • 8:00 AM & 10:00 AM',
                 'body' => 'Whether you are a student in Ampayon, a young professional in downtown Butuan, or a family seeking a vibrant spiritual home, there is a seat at the table for you at KLB.',
                 'cta_text' => 'Meet Our Pastors',
                 'cta_link' => '#about',
@@ -326,9 +326,9 @@ class DatabaseSeeder extends Seeder
                 'page' => 'About Us',
                 'section' => 'Our Story & Heritage',
                 'label' => 'About Us Sanctuary & Campus Image',
-                'title' => 'KLB Worship Center — J.C. Aquino Avenue, Butuan City',
+                'title' => 'KLB Worship Center — P. Burgos Street, Brgy. Diego Silang, Butuan City',
                 'subtitle' => 'MODERN SANCTUARY • KIDS DOME • FELLOWSHIP CAFE',
-                'body' => 'Located along J.C. Aquino Avenue near Robinsons Place Butuan, our campus features a 650-seat main auditorium, dedicated Kids Kingdom classrooms, prayer rooms, and the KLB Grace Fellowship Cafe.',
+                'body' => 'Located along P. Burgos Street, Brgy. Diego Silang, Butuan City, Philippines, 8600, our campus features a welcoming main auditorium, dedicated Kids Kingdom classrooms, prayer rooms, and fellowship spaces.',
                 'cta_text' => 'Get Directions',
                 'cta_link' => '#visit',
                 'image_url' => 'https://images.unsplash.com/photo-1548625361-16802b165212?auto=format&fit=crop&w=1200&q=80',
@@ -477,7 +477,7 @@ class DatabaseSeeder extends Seeder
                 'section' => 'Ministry Pillars',
                 'label' => 'Kids Kingdom Ministry Card Image',
                 'title' => 'Kids Kingdom (Ages 3–12)',
-                'subtitle' => 'SUNDAYS 8:30 AM & 10:30 AM • KIDS DOME',
+                'subtitle' => 'SUNDAYS 8:00 AM & 10:00 AM • KIDS DOME',
                 'body' => 'Safe, background-checked, interactive Bible adventures where children encounter Jesus through music, crafts, and age-tailored small groups.',
                 'cta_text' => 'Pre-Register Kids',
                 'cta_link' => '#visit',
@@ -672,7 +672,7 @@ class DatabaseSeeder extends Seeder
                 'section' => 'Fellowship Gallery',
                 'label' => 'Visitor Gallery Photo #1 (Sunday Worship)',
                 'title' => 'Sunday Celebration Overflow',
-                'subtitle' => 'MAIN AUDITORIUM • 10:30 AM SERVICE',
+                'subtitle' => 'MAIN AUDITORIUM • 8:00 AM & 10:00 AM SERVICES',
                 'body' => 'Hundreds lifting one voice in praise during our Sunday Celebration gathering in Butuan City.',
                 'cta_text' => 'Worship',
                 'cta_link' => '#gallery',
@@ -899,6 +899,13 @@ class DatabaseSeeder extends Seeder
                     'subtitle' => $item['subtitle'],
                     'body' => $item['body'],
                     'cta_text' => $item['cta_text'],
+                ]);
+            }
+            if (in_array($item['key'], ['hero_pastor_welcome', 'about_sanctuary_photo', 'ministry_kids_image', 'gallery_butuan_1'], true)) {
+                $record->update([
+                    'title' => $item['title'],
+                    'subtitle' => $item['subtitle'],
+                    'body' => $item['body'],
                 ]);
             }
         }

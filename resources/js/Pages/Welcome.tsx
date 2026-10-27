@@ -1233,7 +1233,7 @@ export default function Welcome({
                                     </span>
                                 </div>
                                 <p className="text-[11px] text-muted-foreground">
-                                    J.C. Aquino Ave., Butuan City • Sundays 8:30 AM &amp; 10:30 AM
+                                    P. Burgos Street, Brgy. Diego Silang, Butuan City • Sundays 8:00 AM &amp; 10:00 AM
                                 </p>
                             </div>
                         </button>
@@ -1405,7 +1405,7 @@ export default function Welcome({
                                                 SUNDAY SERVICES
                                             </div>
                                             <div className="mt-1 text-sm font-semibold text-white">
-                                                8:30 AM &amp; 10:30 AM
+                                                8:00 AM &amp; 10:00 AM
                                             </div>
                                             <div className="text-[11px] text-slate-300">
                                                 Kids Kingdom Concurrent
@@ -1431,10 +1431,10 @@ export default function Welcome({
                                                 OUR CAMPUS
                                             </div>
                                             <div className="mt-1 text-sm font-semibold text-white">
-                                                J.C. Aquino Avenue
+                                                P. Burgos St., Brgy. Diego Silang
                                             </div>
                                             <div className="text-[11px] text-slate-300">
-                                                Butuan City, Agusan del Norte
+                                                Butuan City, Philippines, 8600
                                             </div>
                                         </div>
                                     </div>
@@ -2125,7 +2125,7 @@ export default function Welcome({
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
                                             <div className="flex items-center gap-2.5 text-foreground font-medium">
                                                 <MapPin className="h-4 w-4 text-primary shrink-0" />
-                                                J.C. Aquino Ave., Butuan City (Near Robinsons)
+                                                P. Burgos Street, Brgy. Diego Silang, Butuan City, Philippines, 8600
                                             </div>
                                             <div className="flex items-center gap-2.5 text-foreground font-medium">
                                                 <Phone className="h-4 w-4 text-primary shrink-0" />
@@ -2531,7 +2531,7 @@ export default function Welcome({
                                     Kingdom Life Butuan (KLB)
                                 </div>
                                 <div>
-                                    J.C. Aquino Avenue, Butuan City, Agusan del Norte, Philippines 8600
+                                    P. Burgos Street, Brgy. Diego Silang, Butuan City, Philippines, 8600
                                 </div>
                             </div>
                         </div>
